@@ -1,0 +1,29 @@
+name: Viru Radio 6H Stream
+
+on:
+  workflow_dispatch: # ඔයාට කැමති වෙලාවට Start කරන්න පුළුවන්
+
+jobs:
+  stream:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360 # පැය 6න් Auto Cut වෙනවා
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install FFmpeg & Sinhala Fonts
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+          wget "https://github.com/mooniak/abhaya-libre-font/raw/master/fonts/ttf/AbhayaLibre-Bold.ttf" -O font.ttf
+
+      - name: Run Viru Radio Stream
+        env:
+          YOUTUBE_STREAM_KEY: ${{ secrets.YOUTUBE_STREAM_KEY }}
+        run: node index.js
