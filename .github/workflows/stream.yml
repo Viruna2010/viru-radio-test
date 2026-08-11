@@ -1,12 +1,12 @@
 name: Viru Radio 6H Stream
 
 on:
-  workflow_dispatch: # ඔයාට කැමති වෙලාවට Manual Start කරන්න පුළුවන්
+  workflow_dispatch:
 
 jobs:
   stream:
     runs-on: ubuntu-latest
-    timeout-minutes: 360 # පැය 6න් Auto Stop වෙනවා
+    timeout-minutes: 360 # පැය 6යි
 
     steps:
       - name: Checkout Repository
@@ -17,12 +17,12 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Install FFmpeg & Sinhala Fonts
+      - name: Install FFmpeg & High Quality Sinhala Font
         run: |
           sudo apt-get update
           sudo apt-get install -y ffmpeg
-          # Google Fonts එකෙන් අලුත් වැඩ කරන Sinhala font link එක
-          wget "https://raw.githubusercontent.com/google/fonts/main/ofl/abhayalibre/AbhayaLibre-Bold.ttf" -O font.ttf
+          # Text Shaping එක්ක ලස්සනටම වැඩ කරන Noto Sans Sinhala Bold Font එක ඩවුන්ලෝඩ් කරනවා
+          wget "https://raw.githubusercontent.com/google/fonts/main/ofl/notosanssinhala/static/NotoSansSinhala-Bold.ttf" -O font.ttf
 
       - name: Run Viru Radio Stream
         env:
