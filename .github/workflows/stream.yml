@@ -6,23 +6,25 @@ on:
 jobs:
   stream:
     runs-on: ubuntu-latest
-    timeout-minutes: 360 # පැය 6යි
+    timeout-minutes: 360
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4 # v4 වලට Update කළා (Warning එක fix)
 
       - name: Install Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4 # v4 වලට Update කළා
         with:
-          node-version: '18'
+          node-version: '20'
 
-      - name: Install FFmpeg & High Quality Sinhala Font
+      - name: Install FFmpeg & Sinhala Font
         run: |
           sudo apt-get update
-          sudo apt-get install -y ffmpeg
-          # Text Shaping එක්ක ලස්සනටම වැඩ කරන Noto Sans Sinhala Bold Font එක ඩවුන්ලෝඩ් කරනවා
-          wget "https://raw.githubusercontent.com/google/fonts/main/ofl/notosanssinhala/static/NotoSansSinhala-Bold.ttf" -O font.ttf
+          # fonts-noto-core හරහා Ubuntu සර්වර් එකෙන්ම කෙලින්ම Noto Sans Sinhala ගන්නවා
+          sudo apt-get install -y ffmpeg fonts-noto-core
+          
+          # System එකට install වුනු Sinhala font එක project එකට copy කරගන්නවා (No More 404 Errors)
+          cp $(find /usr/share/fonts/ -name "NotoSansSinhala-Bold.ttf" -o -name "NotoSansSinhala-Regular.ttf" | head -n 1) ./font.ttf
 
       - name: Run Viru Radio Stream
         env:
