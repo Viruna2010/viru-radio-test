@@ -13,13 +13,13 @@ const FONT_FILE = './font.ttf';
 
 const scrollingText = "අපත් සමග රැඳී සිටින්න. මේක testing එකක්, ළඟදීම දෙන්නම්...";
 
-// FFmpeg arguments - text_shaping=1 දැම්මාම සිංහල අකුරු කැඩෙන්නේ නැතුව හරියටම එකතු වෙනවා
 const ffmpegArgs = [
     '-re',
     '-stream_loop', '-1', 
     '-i', AUDIO_URL,
     '-f', 'lavfi',
     '-i', 'color=c=black:s=1280x720:r=30',
+    // text_shaping=1 මගින් සිංහල අකුරු වල කොම්බු/පිලි කැඩෙන්නේ නැතුව ලස්සනට render වෙනවා
     '-vf', `drawbox=y=ih-50:color=black@0.7:width=iw:height=50:t=fill,drawtext=fontfile=${FONT_FILE}:text='VIRU RADIO':fontcolor=white:fontsize=45:x=30:y=30:box=1:boxcolor=black@0.6:boxborderw=10,drawtext=fontfile=${FONT_FILE}:text='TEST TRANSMISSION':fontcolor=red:fontsize=30:x=w-tw-30:y=30:box=1:boxcolor=black@0.6:boxborderw=10,drawtext=fontfile=${FONT_FILE}:text='${scrollingText}':fontcolor=yellow:fontsize=35:y=h-40:x=w-mod(max(t\\,0)*150\\,w+tw):text_shaping=1`,
     '-c:v', 'libx264',
     '-preset', 'veryfast',
@@ -52,7 +52,7 @@ ffmpeg.on('close', (code) => {
     console.log(`Stream ended with code ${code}`);
 });
 
-// පැය 6න් Auto Kill වෙන එක
+// පැය 6න් Auto Stop වෙන එක
 setTimeout(() => {
     console.log("6 Hours completed! Stopping stream safely...");
     ffmpeg.kill('SIGINT');
