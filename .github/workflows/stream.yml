@@ -10,23 +10,21 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4 # v4 වලට Update කළා (Warning එක fix)
+        uses: actions/checkout@v4
 
       - name: Install Node.js
-        uses: actions/setup-node@v4 # v4 වලට Update කළා
+        uses: actions/setup-node@v4
         with:
           node-version: '20'
 
       - name: Install FFmpeg & Sinhala Font
         run: |
           sudo apt-get update
-          # fonts-noto-core හරහා Ubuntu සර්වර් එකෙන්ම කෙලින්ම Noto Sans Sinhala ගන්නවා
           sudo apt-get install -y ffmpeg fonts-noto-core
-          
-          # System එකට install වුනු Sinhala font එක project එකට copy කරගන්නවා (No More 404 Errors)
           cp $(find /usr/share/fonts/ -name "NotoSansSinhala-Bold.ttf" -o -name "NotoSansSinhala-Regular.ttf" | head -n 1) ./font.ttf
 
       - name: Run Viru Radio Stream
         env:
           YOUTUBE_STREAM_KEY: ${{ secrets.YOUTUBE_STREAM_KEY }}
+          TZ: Asia/Colombo # ලංකාවේ වෙලාවට Timezone එක හැදුවා
         run: node index.js
