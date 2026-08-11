@@ -17,14 +17,15 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install FFmpeg & Sinhala Font
+      - name: Install FFmpeg & Fonts
         run: |
           sudo apt-get update
-          sudo apt-get install -y ffmpeg fonts-noto-core
-          cp $(find /usr/share/fonts/ -name "NotoSansSinhala-Bold.ttf" -o -name "NotoSansSinhala-Regular.ttf" | head -n 1) ./font.ttf
+          sudo apt-get install -y ffmpeg fonts-freefont-ttf
+          # System එකේ තියෙන FreeSans ෆොන්ට් එක project එකට copy කරනවා
+          cp /usr/share/fonts/truetype/freefont/FreeSansBold.ttf ./font.ttf
 
       - name: Run Viru Radio Stream
         env:
           YOUTUBE_STREAM_KEY: ${{ secrets.YOUTUBE_STREAM_KEY }}
-          TZ: Asia/Colombo # ලංකාවේ වෙලාවට Timezone එක හැදුවා
+          TZ: Asia/Colombo
         run: node index.js
